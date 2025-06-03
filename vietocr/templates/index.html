@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Camera OCR</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .camera-container, .result-container {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #resultText {
+            text-align: left;
+            white-space: pre-wrap;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Web Camera OCR</h1>
+    <div class="container">
+        <div class="camera-container">
+            <h2>Camera Feed</h2>
+            <video id="video" width="640" height="480" autoplay></video>
+            <canvas id="canvas" width="640" height="480" style="display: none;"></canvas>
+            <div>
+                <button id="captureBtn" class="button">Capture and Recognize</button>
+            </div>
+        </div>
+        <div class="result-container">
+            <h2>Recognition Results</h2>
+            <img id="resultImage" width="640" style="max-width: 100%;" />
+            <h3>Recognized Text:</h3>
+            <div id="resultText"></div>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const captureBtn = document.getElementById('captureBtn');
+        const resultImage = document.getElementById('resultImage');
+        const resultText = document.getElementById('resultText');
+        
+        // Access webcam
+        async function startVideo() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+            } catch (err) {
+                console.error("Error accessing webcam:", err);
+                alert("Error accessing webcam. Please make sure you have a webcam connected and you've granted permission to use it.");
+            }
+        }
+        
+        // Capture image and send to server for processing
+        captureBtn.addEventListener('click', () => {
+            // Draw current video frame to canvas
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Convert canvas to base64 image
+            const imageData = canvas.toDataURL('image/jpeg');
+            
+            // Show loading state
+            resultText.textContent = "Processing...";
+            
+            // Send to server
+            fetch('/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ image: imageData })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display result image
+                resultImage.src = data.result_image;
+                
+                // Display recognized text
+                resultText.textContent = data.result_text;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                resultText.textContent = "Error processing image. Please try again.";
+            });
+        });
+        
+        // Start video when page loads
+        startVideo();
+    </script>
+</body>
+</html>

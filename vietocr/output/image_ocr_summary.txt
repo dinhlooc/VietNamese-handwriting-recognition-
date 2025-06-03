@@ -1,0 +1,55 @@
+BÁO CÁO TỔNG HỢP OCR
+Ngày: 2025-05-07 14:48:09
+--------------------------------------------------------------------------------
+
+Ảnh: d:\PBL5\vietocr\image\inner_left.jpg
+--------------------------------------------------
+Dòng 1: 12. Thừa đầu, như vào trở sản khác gắm niền với chết
+Dòng 2: Lã Thiên đến
+Dòng 3: NH Thiện chết sức 565.
+Dòng 4: bờ bán đỏ sở.
+Dòng 5: 117
+Dòng 6: bị Địa Chỉ : Xử Bình Khành, Phước Cầu Giao Giao, Thanh phố Hồ Chi Minh
+Dòng 7: 1000.3 m2 (Bằng Chủ Một ngân pháp ba mét tráng).
+Dòng 8: Quận (chi.
+Dòng 9: Q. Hình thức sử dụng, sự chúng riêng.
+Dòng 10: Độ Mục dịch sử dụng. Đất trưng lên nước còn biệt
+Dòng 11: 0 thời ban sự dụng 06 - 2000.
+Dòng 12: Bộ NHƯNG SÁT UBND (NHÀ Nội VƠN BẢN Nhiệm Đất được Công nhân Quốc Độ
+Dòng 13: không còn tiếng sự dụng chỉ.
+Dòng 14: chi thứ nơi x.
+Dòng 15: đã Công trình xây dựng khắc định
+Dòng 16: A Riêng sân xuất là riêng trồng : do chương
+Dòng 17: Sẽ Cây lần năm du.
+Dòng 18: A Chi chưa
+Dòng 19: Thừa dất sơ 565 có một phần điện tích nằm trong lô giới.
+Dòng 20: TP.Hồ Chi Minh, ngày có tháng 16 năm 2003.
+Dòng 21: SỞ TÁI NGUYỂN VẢ MÔI TRƯỞNG TP.HCCHI MINH TP.
+Dòng 22: TUQI GIẢM ĐÔC SỞ
+Dòng 23: PHÔ GIẢM ĐÔC VẢN PHONG DÀNG KỦ ĐẢI ĐÁI THÀNH PHÔNG
+Dòng 24: 800.
+Dòng 25: TAINSAT
+Dòng 26: THÀNH TP.HCM
+Dòng 27: Tô Thành Phương
+Dòng 28: Số vào sắp CCN CS01765
+
+--------------------------------------------------
+
+Ảnh: d:\PBL5\vietocr\image\test.png
+--------------------------------------------------
+Dòng 1: Văn Công Chị Thanh.
+
+--------------------------------------------------
+
+Ảnh: d:\PBL5\vietocr\image\test4.png
+--------------------------------------------------
+Dòng 1: Được bạn không thể sáng lạo và
+Dòng 2: thế hãy thức bắt chước theo ".
+Dòng 3: người khác điểm 10 diễm khóc đã
+Dòng 4: biết điểm ciỗng và khóc điểm.
+Dòng 5: tốt vô xâu để kết hợp với.
+Dòng 6: những cói lan đó đỏ có 10 đồ tạo.
+Dòng 7: ta sản nhóm của niêng lòn.
+
+--------------------------------------------------
+

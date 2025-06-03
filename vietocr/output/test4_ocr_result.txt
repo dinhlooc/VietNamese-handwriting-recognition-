@@ -1,0 +1,9 @@
+Kết quả OCR cho ảnh: d:\PBL5\vietocr\image\test4.png
+--------------------------------------------------
+Dòng 1: Được bạn không thể sáng lạo và
+Dòng 2: thế hãy thức bắt chước theo ".
+Dòng 3: người khác điểm 10 diễm khóc đã
+Dòng 4: biết điểm ciỗng và khóc điểm.
+Dòng 5: tốt vô xâu để kết hợp với.
+Dòng 6: những cói lan đó đỏ có 10 đồ tạo.
+Dòng 7: ta sản nhóm của niêng lòn.

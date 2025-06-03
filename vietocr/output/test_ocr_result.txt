@@ -1,0 +1,3 @@
+Kết quả OCR cho ảnh: d:\PBL5\vietocr\image\test.png
+--------------------------------------------------
+Dòng 1: Văn Công Chị Thanh.
