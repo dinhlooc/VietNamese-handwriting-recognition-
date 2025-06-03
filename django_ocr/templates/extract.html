@@ -1,0 +1,185 @@
+{% extends "index.html" %}
+{% block title %}Trích xuất thông tin từ ảnh{% endblock %}
+{% block extra_head %}
+<style>
+    .sidebar-section {
+        min-width: 220px;
+        max-width: 220px;
+        float: left;
+        margin-right: 24px;
+        margin-bottom: 0;
+    }
+    .sidebar-section .sidebar-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 12px;
+        margin-top: 10px;
+        text-align: left;
+    }
+    .sidebar-section .form-type-link {
+        display: block;
+        padding: 10px 18px;
+        border-radius: 6px;
+        margin-bottom: 6px;
+        font-weight: 500;
+        color: #1976d2;
+        background: #f4f8ff;
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s;
+        text-align: left;
+    }
+    .sidebar-section .form-type-link.active, .sidebar-section .form-type-link:hover {
+        background: #0d6efd;
+        color: #fff;
+        text-decoration: none;
+    }
+    .history-section {
+        min-width: 220px;
+        max-width: 220px;
+        float: left;
+        margin-right: 24px;
+        margin-bottom: 0;
+    }
+    .history-section .sidebar-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 12px;
+        margin-top: 10px;
+        text-align: left;
+    }
+    .history-section .list-group-item {
+        background: none;
+        border: none;
+        padding: 0 0 0 0;
+    }
+    .history-section .list-group-item.small {
+        font-size: 0.97rem;
+    }
+    .history-section .history-link {
+        color: #1976d2;
+        text-decoration: underline;
+    }
+    .history-section .history-link:hover {
+        color: #0d6efd;
+    }
+    .extract-image {
+        max-width: 100%;
+        max-height: 350px;
+        width: auto;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px #dfe6e9;
+        object-fit: contain;
+        margin: 0 auto;
+        display: block;
+    }
+    @media (max-width: 991px) {
+        .sidebar-section, .history-section { float: none; margin-right: 0; margin-bottom: 24px; }
+    }
+</style>
+{% endblock %}
+{% block sidebar %}
+<div class="sidebar-section">
+    <div class="sidebar-title">Chọn loại đơn</div>
+    <ul class="list-group mb-4">
+        <li class="list-group-item">
+            <a href="?form_type=chuyencap" class="form-type-link {% if form_type == 'chuyencap' or not form_type %}active{% endif %}">Đơn chuyển cấp đào tạo</a>
+        </li>
+        <li class="list-group-item">
+            <a href="?form_type=chungchi" class="form-type-link {% if form_type == 'chungchi' %}active{% endif %}">Đơn xin công nhận chứng chỉ</a>
+        </li>
+        <li class="list-group-item">
+            <a href="?form_type=chuongtrinhhai" class="form-type-link {% if form_type == 'chuongtrinhhai' %}active{% endif %}">Đơn xin học chương trình hai</a>
+        </li>
+    </ul>
+</div>
+<div class="history-section">
+    <div class="sidebar-title">Lịch sử trích xuất</div>
+    <ul class="list-group">
+    {% for item in history %}
+        <li class="list-group-item small">
+            <a href="{{ item.detail_url }}" class="history-link">
+                <b>{{ item.created_at|date:'d/m/Y H:i' }}</b> - {{ item.summary }}
+            </a>
+        </li>
+    {% empty %}
+        <li class="list-group-item">Chưa có lịch sử.</li>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+{% block content %}
+<h2 class="mb-4">
+    {% if form_type == 'chuyencap' or not form_type %}Đơn chuyển cấp đào tạo{% elif form_type == 'chungchi' %}Đơn xin công nhận chứng chỉ{% elif form_type == 'chuongtrinhhai' %}Đơn xin học chương trình hai{% endif %}
+</h2>
+<form class="upload-box mb-4" action="" method="post" enctype="multipart/form-data" id="uploadForm">
+    {% csrf_token %}
+    <label class="upload-label" for="fileInput">Chọn tệp ảnh để trích xuất</label>
+    <input type="file" name="file" id="fileInput" accept="image/*" required>
+    <div class="upload-file-name" id="fileName">Không có tệp nào được chọn</div>
+    <button type="submit" class="btn btn-primary mt-3">Tải lên & Trích xuất</button>
+    <input type="hidden" name="form_type" value="{{ form_type|default:'chuyencap' }}">
+</form>
+<form class="upload-box mb-4" action="" method="post" id="cameraForm">
+    {% csrf_token %}
+    <input type="hidden" name="from_camera" value="1">
+    <input type="hidden" name="form_type" value="{{ form_type|default:'chuyencap' }}">
+    <button type="submit" class="btn btn-success mt-2">Trích xuất từ Camera</button>
+</form>
+{% if image_url %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">Ảnh đã tải lên</div>
+            <div class="card-body text-center">
+                <img src="{{ image_url }}" alt="Ảnh tải lên" class="extract-image">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card shadow-sm mt-4">
+    <div class="card-header bg-success text-white">Thông tin trích xuất</div>
+    <div class="card-body">
+        {% if extracted_info %}
+        <ul class="list-group">
+        {% for key, value in extracted_info.items %}
+            <li class="list-group-item">
+                <strong>{{ key }}:</strong> {{ value }}
+            </li>
+        {% endfor %}
+        </ul>
+        {% else %}
+        <div class="text-muted">Không có dữ liệu trích xuất.</div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+{% if error %}
+<div class="alert alert-danger mt-3">{{ error }}</div>
+{% endif %}
+{% endblock %}
+{% block extra_script %}
+<script>
+const fileInput = document.getElementById('fileInput');
+const fileName = document.getElementById('fileName');
+fileInput.addEventListener('change', function() {
+    fileName.textContent = fileInput.files.length ? fileInput.files[0].name : 'Không có tệp nào được chọn';
+});
+document.querySelectorAll('.form-type-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+        // Đổi loại đơn bằng query string, không cần fetch ajax
+    });
+});
+document.querySelectorAll('.history-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        fetch(this.href, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+            .then(res => res.text())
+            .then(html => {
+                const content = new DOMParser().parseFromString(html, 'text/html').querySelector('.center-content').innerHTML;
+                document.querySelector('.center-content').innerHTML = content;
+            });
+    });
+});
+</script>
+{% endblock %}

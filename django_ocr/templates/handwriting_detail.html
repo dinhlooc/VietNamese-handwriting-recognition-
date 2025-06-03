@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+{% block title %}Chi tiết nhận diện chữ viết tay{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block content %}
+<h2 class="mb-4">Chi tiết nhận diện chữ viết tay</h2>
+<div class="card shadow-sm">
+    <div class="card-header bg-success text-white">Kết quả nhận diện</div>
+    <div class="card-body">
+        <ul class="list-group mb-3">
+        {% for line in results %}
+            <li class="list-group-item">{{ line }}</li>
+        {% endfor %}
+        </ul>
+        {% if image_url %}
+        <div class="text-center">
+            <img src="{{ image_url }}" alt="Ảnh kết quả" style="max-width:100%;height:auto;">
+        </div>
+        {% endif %}
+        <div class="text-muted mt-2">Thời gian: {{ result_obj.created_at|date:'d/m/Y H:i' }}</div>
+    </div>
+</div>
+<div class="mt-4">
+    <a href="{% url 'handwriting' %}" class="btn btn-secondary">Quay lại lịch sử</a>
+</div>
+{% endblock %}

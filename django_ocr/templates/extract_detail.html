@@ -1,0 +1,48 @@
+{% extends "index.html" %}
+{% block title %}Chi tiết trích xuất{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block content %}
+<h2 class="mb-4">Chi tiết trích xuất thông tin</h2>
+{% if image_url %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">Ảnh đã tải lên</div>
+            <div class="card-body text-center">
+                <img src="{{ image_url }}" alt="Ảnh tải lên" style="max-width:100%;height:auto;">
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="card shadow-sm mt-4">
+    <div class="card-header bg-success text-white">Thông tin trích xuất</div>
+    <div class="card-body">
+        <ul class="list-group">
+        {% for key, value in extracted_info.items %}
+            <li class="list-group-item">
+                <strong>{{ key }}:</strong> {{ value }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+<div class="mt-4">
+    <a href="{% url 'extract' %}" class="btn btn-secondary history-link">Quay lại lịch sử</a>
+</div>
+{% endblock %}
+{% block extra_script %}
+<script>
+document.querySelectorAll('.history-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        fetch(this.href, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+            .then(res => res.text())
+            .then(html => {
+                const content = new DOMParser().parseFromString(html, 'text/html').querySelector('.center-content').innerHTML;
+                document.querySelector('.center-content').innerHTML = content;
+            });
+    });
+});
+</script>
+{% endblock %}

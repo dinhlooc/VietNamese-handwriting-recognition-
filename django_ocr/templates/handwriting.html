@@ -1,0 +1,86 @@
+{% extends "index.html" %}
+{% block title %}Nhận diện chữ viết tay{% endblock %}
+{% block sidebar %}
+<div class="sidebar">
+    <div class="sidebar-title">Lịch sử nhận diện chữ viết tay</div>
+    <ul class="list-group">
+    {% for item in history %}
+        <li class="list-group-item small">
+            <a href="{% url 'handwriting_detail' item.id %}" class="handwriting-history-link">
+                <b>{{ item.created_at|date:'d/m/Y H:i' }}</b> - {{ item.text|truncatechars:40 }}
+            </a>
+        </li>
+    {% empty %}
+        <li class="list-group-item">Chưa có lịch sử.</li>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+{% block extra_head %}
+<style>
+    .handwriting-image {
+        max-width: 100%;
+        max-height: 350px;
+        width: auto;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px #dfe6e9;
+        object-fit: contain;
+        margin: 0 auto 18px auto;
+        display: block;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<h2 class="mb-4">Nhận diện chữ viết tay</h2>
+<form class="upload-box mb-4" method="get" id="handwritingForm">
+    <button type="submit" class="btn btn-warning">
+        <span id="loadingIcon" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+        Nhấn để nhận diện chữ viết tay
+    </button>
+</form>
+<div id="handwriting-result">
+    {% if results %}
+    <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">Kết quả nhận diện</div>
+        <div class="card-body">
+            <ul class="list-group mb-3">
+            {% for line in results %}
+                <li class="list-group-item">{{ line }}</li>
+            {% endfor %}
+            </ul>
+            {% if image_base64 %}
+            <div class="text-center">
+                <img src="data:image/jpeg;base64,{{ image_base64 }}" alt="Ảnh kết quả" class="handwriting-image">
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+{% block extra_script %}
+<script>
+document.getElementById('handwritingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    document.getElementById('loadingIcon').classList.remove('d-none');
+    fetch(window.location.pathname + '?run=1', {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById('handwriting-result').innerHTML = new DOMParser().parseFromString(html, 'text/html').getElementById('handwriting-result').innerHTML;
+            document.getElementById('loadingIcon').classList.add('d-none');
+        });
+});
+document.querySelectorAll('.handwriting-history-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        fetch(this.href, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+            .then(res => res.text())
+            .then(html => {
+                const content = new DOMParser().parseFromString(html, 'text/html').querySelector('.center-content').innerHTML;
+                document.querySelector('.center-content').innerHTML = content;
+            });
+    });
+});
+</script>
+{% endblock %}
